@@ -14,8 +14,8 @@ const initWeb3 = () => {
             new Web3(window.ethereum)
           );
         })
-        .catch(e => {
-          reject(e);
+        .catch(error => {
+          reject(error);
         });
       return;
     }
@@ -44,19 +44,19 @@ const initApp = () => {
   let accounts = [];
 
   web3.eth.getAccounts()
-  .then(_accounts => {
-    accounts = _accounts;
-    return advancedStorage.methods
-      .getAll()
-      .call();
-  })
-  .then(result => {
-    $data.innerHTML = result.join(', ');
-  });
+    .then(_accounts => {
+      accounts = _accounts;
+      return advancedStorage.methods
+        .getAll()
+        .call();
+    })
+    .then(result => {
+      $data.innerHTML = result.join(', ');
+    });
 
-  $addData.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const data = e.target.elements[0].value;
+  $addData.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const data = event.target.elements[0].value;
     advancedStorage.methods
       .add(data)
       .send({from: accounts[0]})
@@ -78,5 +78,5 @@ document.addEventListener('DOMContentLoaded', () => {
       advancedStorage = initContract();
       initApp(); 
     })
-    .catch(e => console.log(e.message));
+    .catch(event => console.log(event.message));
 });
